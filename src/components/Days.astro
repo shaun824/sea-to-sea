@@ -1,0 +1,19 @@
+---
+import { days } from '../data/site';
+---
+<div class="s2s-days">
+  {days.map((d) => (
+    <div class={`s2s-day${d.ride ? ' s2s-day--ride' : ''}`}>
+      <div class="s2s-day__date" aria-label={`${d.dow} ${d.num} ${d.mon}`}>
+        <span class="s2s-day__dow" aria-hidden="true">{d.dow}</span>
+        <span class="s2s-day__num" aria-hidden="true">{d.num}</span>
+        <span class="s2s-day__mon" aria-hidden="true">{d.mon}</span>
+      </div>
+      <div>
+        <span class="s2s-day__label">{d.label}</span>
+        <h3 class="s2s-day__title">{d.title}</h3>
+        <p class="s2s-day__meta">{d.meta}</p>
+      </div>
+    </div>
+  ))}
+</div>

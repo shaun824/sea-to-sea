@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { contact } from '../data/site';
+const formId = import.meta.env.PUBLIC_FORMSPREE_ID;
+---
+<Base title="Contact" description="Talk to the Red Cherry Events team about JBFE Sea to Sea.">
+  <section class="section" style="padding-top: 120px">
+    <div class="wrap contact-grid">
+      <div class="stack">
+        <h1 class="display-xl">Talk to us</h1>
+        <p class="lead">Questions about routes, bikes, rooms or bringing the kids? We’ve ridden every metre.</p>
+        <div>
+          <div class="contact-line"><span>Call</span><a href={contact.phoneHref}>{contact.phone}</a></div>
+          <div class="contact-line"><span>Email</span><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
+          <div class="contact-line"><span>Office hours</span><strong>{contact.hours}</strong></div>
+          <div class="contact-line"><span>Office</span><strong>{contact.address}</strong></div>
+        </div>
+      </div>
+      <form class="form" method="POST" action={formId ? `https://formspree.io/f/${formId}` : `mailto:${contact.email}`} enctype={formId ? undefined : 'text/plain'}>
+        <h2 class="headline">Send a message</h2>
+        <label>Name <input name="name" autocomplete="name" required /></label>
+        <label>Email <input name="email" type="email" autocomplete="email" required /></label>
+        <label>Phone <input name="phone" type="tel" autocomplete="tel" /></label>
+        <label>Message <textarea name="message" required placeholder="Team size, bikes, questions…"></textarea></label>
+        <div><button class="s2s-btn s2s-btn--primary" type="submit">Send message</button></div>
+      </form>
+    </div>
+  </section>
+</Base>

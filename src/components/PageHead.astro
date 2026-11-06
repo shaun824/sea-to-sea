@@ -1,0 +1,13 @@
+---
+import Pic from './Pic.astro';
+interface Props { title: string; lead?: string; img: string; alt?: string }
+const { title, lead, img, alt = '' } = Astro.props;
+---
+<section class="page-head">
+  <div class="page-head__img"><Pic name={img} alt={alt} eager /></div>
+  <div class="wrap">
+    <h1 class="display-xl" style="max-width: 12ch">{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+</section>

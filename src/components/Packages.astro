@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+import { packages, event, rand, deposit } from '../data/site';
+---
+<div class="s2s-packages">
+  {packages.map((p, i) => (
+    <article class={`s2s-package${i === 0 ? ' s2s-package--lead' : ''}`}>
+      <h3 class="s2s-package__name">{p.name}</h3>
+      <p class={`s2s-package__price${p.price == null ? ' is-tbc' : ''}`}>{rand(p.price)}</p>
+      <p class="s2s-package__note small">{p.note} · {event.edition} · {event.dates}</p>
+      <ul class="s2s-package__list">
+        {p.items.map((it) => <li><Icon name="check" /><span>{it}</span></li>)}
+      </ul>
+      <div><a class={`s2s-btn ${i === 0 ? 's2s-btn--primary' : 's2s-btn--ghost'}`} href={event.enterUrl} rel="noopener">{p.cta}</a></div>
+    </article>
+  ))}
+</div>
+<p class="small muted" style="margin-top: var(--space-4)">
+  {deposit == null ? 'Deposit and payment dates are confirmed when entries open.' : `A ${rand(deposit)} per person non-refundable deposit secures your spot.`}
+  {' '}Swap a rider any time for R50 using “change ownership” on your entry.
+</p>

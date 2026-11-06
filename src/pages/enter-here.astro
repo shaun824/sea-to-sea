@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Packages from '../components/Packages.astro';
+import { event } from '../data/site';
+---
+<Base title="Entries" description={`Enter your team for ${event.edition}, ${event.dates} ${event.year}. Limited to ${event.teamsMax} teams.`}>
+  <PageHead title="Enter your team" img="goodie-tent" lead={`${event.edition}, ${event.datesLong}. Limited to ${event.teamsMax} teams.`}>
+    <div class="btn-row"><a class="s2s-btn s2s-btn--primary" href={event.enterUrl} rel="noopener">Enter your team</a></div>
+  </PageHead>
+
+  <section class="section" style="padding-top: var(--space-6)">
+    <div class="wrap">
+      <Packages />
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0; border-top: 0">
+    <div class="wrap facts-list">
+      <div>
+        <h3>How teams work</h3>
+        <p class="body">Teams are {event.teamSize}. Everyone on a team registers together, rides together and must be at the briefing each evening. Each team can add up to two supporters.</p>
+      </div>
+      <div>
+        <h3>Already entered?</h3>
+        <p class="body">Log in to <a href={event.loginUrl} rel="noopener">manage your entry</a>, pay your balance or swap a rider. The <a href={event.riderHubUrl} rel="noopener">Rider Hub</a> has your routes and event updates.</p>
+      </div>
+    </div>
+  </section>
+</Base>

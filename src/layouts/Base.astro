@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import Footer from '../components/Footer.astro';
+import { event, contact } from '../data/site';
+
+interface Props { title?: string; description?: string; image?: string; imageAlt?: string; schema?: object[]; noindex?: boolean }
+const {
+  title,
+  description = `A 3-day navigational team enduro through the tribal lands of the Transkei on the Wild Coast. Hotel to hotel, luggage and fuel moved for you. ${event.edition}, ${event.dates} ${event.year}.`,
+  image = '/og/home.jpg',
+  imageAlt = 'Two riders looking out over the Wild Coast, with the JBFE Sea to Sea badge',
+  schema = [],
+  noindex = false,
+} = Astro.props;
+const fullTitle = title ? `${title} | JBFE Sea to Sea` : 'JBFE Sea to Sea | 3-day team enduro on the Wild Coast';
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/the-journey/', label: 'The route' },
+  { href: '/ride-info/', label: 'Ride info' },
+  { href: '/enter-here/', label: 'Entries' },
+  { href: '/contact-us/', label: 'Contact' },
+];
+const canonical = new URL(path, Astro.site ?? 'https://www.seatosea.co.za');
+const org = {
+  '@context': 'https://schema.org', '@type': 'Organization', name: 'Red Cherry Events',
+  url: contact.organiser, email: contact.email, telephone: '+27415815335',
+  sameAs: [contact.facebook, contact.instagram],
+};
+---
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+  <meta name="theme-color" content="#231f20" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="JBFE Sea to Sea" />
+  <meta property="og:locale" content="en_ZA" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(image, canonical)} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={imageAlt} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={new URL(image, canonical)} />
+  <script type="application/ld+json" set:html={JSON.stringify(org)} />
+  {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/fonts/FrutigerLTPro-ExtraBlkCnIta.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/FrutigerLTPro-Roman.woff2" as="font" type="font/woff2" crossorigin />
+  <slot name="head" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-head">
+    <div class="wrap site-head__bar">
+      <a class="site-head__logo" href="/" aria-label="JBFE Sea to Sea home">
+        <img src="/logos/badge-240.webp" alt="" width="44" height="60" />
+        <span>Sea to Sea <span class="visually-hidden">South</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      </nav>
+      <a class="s2s-btn s2s-btn--primary head-cta" href={event.enterUrl} rel="noopener">Enter your team</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+        <Icon name="menu" />
+      </button>
+    </div>
+    <nav id="mobile-nav" class="wrap mobile-nav" aria-label="Main" data-open="false">
+      <a href="/">Home</a>
+      {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      <a class="s2s-btn s2s-btn--primary" href={event.enterUrl} rel="noopener">Enter your team</a>
+    </nav>
+  </header>
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+  <script>
+    const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+    const nav = document.getElementById('mobile-nav');
+    btn?.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      nav?.setAttribute('data-open', String(open));
+    });
+  </script>
+</body>
+</html>

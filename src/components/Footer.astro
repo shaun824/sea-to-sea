@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import { contact, sponsors, otherEvents, event } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="site-foot__grid">
+      <div class="stack-sm">
+        <h2>Title sponsor</h2>
+        <a href={sponsors.title.href} rel="noopener" aria-label="JBFE"><img class="site-foot__tiles" src="/logos/jbfe-tiles-on-gravel.png" alt="JBFE" width="180" height="60" loading="lazy" /></a>
+        <h2 style="margin-top: var(--space-5)">Supported by</h2>
+        <div class="sponsors">
+          {sponsors.supporters.map((s) => s.href
+            ? <a href={s.href} rel="noopener"><img src={s.logo} alt={s.name} loading="lazy" /></a>
+            : <img src={s.logo} alt={s.name} loading="lazy" />)}
+        </div>
+      </div>
+      <div>
+        <h2>Talk to us</h2>
+        <ul>
+          <li><a href={contact.phoneHref}>{contact.phone}</a></li>
+          <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+          <li class="muted small">{contact.hours}</li>
+          <li><a href={event.loginUrl} rel="noopener">Manage your entry</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>More from Red Cherry</h2>
+        <ul>
+          {otherEvents.map((e) => <li><a href={e.href} rel="noopener">{e.name}</a></li>)}
+        </ul>
+      </div>
+    </div>
+    <div class="site-foot__base small">
+      <span>© {year} <a href={contact.organiser} rel="noopener">Red Cherry Events</a>. #EpicAdventure</span>
+      <div class="socials">
+        <a href={contact.facebook} rel="noopener" aria-label="Sea to Sea on Facebook"><Icon name="facebook" /></a>
+        <a href={contact.instagram} rel="noopener" aria-label="Sea to Sea on Instagram"><Icon name="instagram" /></a>
+      </div>
+    </div>
+  </div>
+</footer>

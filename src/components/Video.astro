@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+interface Props { id: string; poster: string; title: string }
+const { id, poster, title } = Astro.props;
+---
+<div class="video" data-video={id}>
+  <img src={`/img/${poster}-1600.webp`} alt="" loading="lazy" decoding="async" width="1600" height="900" />
+  <button type="button" aria-label={`Play video: ${title}`}><span><Icon name="play" /> Watch the film</span></button>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((el) => {
+    el.querySelector('button')?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${el.dataset.video}?autoplay=1&rel=0`;
+      f.title = 'JBFE Sea to Sea film';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      el.replaceChildren(f);
+    });
+  });
+</script>

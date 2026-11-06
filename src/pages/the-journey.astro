@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Pic from '../components/Pic.astro';
+import Grade from '../components/Grade.astro';
+import Days from '../components/Days.astro';
+import { event, grades } from '../data/site';
+---
+<Base title="The route" description={`Three days on the Wild Coast: ${event.startHotel} to ${event.midHotel} and back, on Gold, Silver or Adventure routes.`}>
+  <PageHead title="The route" img="coast-aerial" lead={`A round trip through the tribal lands of the Transkei. ${event.startHotel} to ${event.midHotel}, a loop, and back again.`} />
+
+  <section class="section" style="padding-top: var(--space-6)">
+    <div class="wrap split" style="align-items: start">
+      <div class="stack">
+        <h2 class="headline">Day by day</h2>
+        <p class="body muted">Distances for {event.year} are confirmed once the routes are ridden in. The average day is about 80 km. GPS routes go out by email to every entrant the week before the ride.</p>
+        <div class="split__img"><Pic name="speed" alt="A rider at speed on a dirt road across green hills" sizes="(min-width: 900px) 50vw, 100vw" /></div>
+      </div>
+      <Days />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap">
+      <h2 class="display-lg">Three grades</h2>
+      <div class="grades">
+        {grades.map((g) => (
+          <article class="grade">
+            <Pic name={g.img} alt={g.alt} sizes="(min-width: 900px) 33vw, 100vw" />
+            <div><Grade id={g.id} name={g.name} dots={g.dots} /></div>
+            <h3 class="grade__who">{g.who}</h3>
+            <p>{g.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap facts-list">
+      <div>
+        <h3>Which bike?</h3>
+        <p class="body">Gold and Silver are for enduro bikes, ideally with an electric start. Adventure is for the big bikes: T7, 790, Africa Twin. Skilled riders bring 1250s and 1290s.</p>
+      </div>
+      <div>
+        <h3>Bringing the kids</h3>
+        <p class="body">Kids are usually 10 and up. Riders on 65s with long-range fuel tanks take on the Silver routes, and we move fuel out on the route for the small bikes.</p>
+      </div>
+      <div>
+        <h3>Navigation</h3>
+        <p class="body">It’s a navigational enduro, so you ride with a GPS. We can help load routes at registration, but only on Garmin eTrex units.</p>
+      </div>
+      <div>
+        <h3>Riding through communities</h3>
+        <p class="body">The routes cross the tribal lands of the Transkei and run through villages. Ride slowly past homes, livestock and kids, and greet people. We’re guests here.</p>
+      </div>
+    </div>
+  </section>
+</Base>

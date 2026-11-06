@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Pic from '../components/Pic.astro';
+import Grade from '../components/Grade.astro';
+import Days from '../components/Days.astro';
+import Packages from '../components/Packages.astro';
+import Video from '../components/Video.astro';
+import { event, grades } from '../data/site';
+
+const included = [
+  { icon: 'hotel', h: 'Hotels, not tents', p: `Four nights between ${event.startHotel} and ${event.midHotel}. Two nights at Kob Inn means no packing up.` },
+  { icon: 'truck', h: 'No support driver needed', p: 'We move your luggage and fuel between hotels. Your bag is in your room when you get in.' },
+  { icon: 'meals', h: '12 meals over 4 days', p: 'Breakfast, lunch at the water point and dinner every night. Tell us about dietary needs.' },
+  { icon: 'medic', h: 'Backup on every route', p: 'Full medical backup and chopper standby, with sweeps and recovery vehicles out on the tracks.' },
+  { icon: 'water', h: 'Water points every day', p: 'Cold water, Coke, energy drinks and snacks, run by the Red Cherry crew.' },
+  { icon: 'beer', h: 'Beer O’Clock', p: 'Free beers on the finish line each day. Then the stories get bigger.' },
+];
+
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'SportsEvent', name: `${event.edition} ${event.year}`,
+  startDate: event.startDate, endDate: event.endDate, eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: { '@type': 'Place', name: event.startHotel, address: { '@type': 'PostalAddress', addressRegion: 'Eastern Cape', addressCountry: 'ZA' } },
+  organizer: { '@type': 'Organization', name: 'Red Cherry Events', url: 'https://www.redcherryevents.co.za/' },
+  image: 'https://www.seatosea.co.za/og/home.jpg',
+  description: 'A 3-day navigational team enduro through the tribal lands of the Transkei on the Wild Coast.',
+}];
+---
+<Base schema={schema}>
+  <section class="hero">
+    <div class="hero__img"><Pic name="coast-riders" alt="Two riders stop on a grassy ridge above the Wild Coast" eager /></div>
+    <div class="wrap hero__inner">
+      <img class="hero__badge" src="/logos/badge-480.webp" alt="JBFE Sea to Sea, an epic adventure" width="168" height="231" />
+      <p class="hero__when"><span>{event.datesLong}</span> · Trennerys to Kob Inn and back</p>
+      <h1 class="display-xl">Dirt bike heaven on the Wild Coast</h1>
+      <p class="lead">A 3-day navigational team enduro through the tribal lands of the Transkei. Ride hotel to hotel with your mates. We carry the bags.</p>
+      <div class="btn-row">
+        <a class="s2s-btn s2s-btn--primary" href={event.enterUrl} rel="noopener">Enter your team</a>
+        <a class="s2s-btn s2s-btn--ghost" href="/the-journey/">See the route</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="s2s-facts" aria-label="The event in numbers">
+    <div class="wrap s2s-facts__grid">
+      <div class="s2s-facts__item"><div class="s2s-facts__num">3</div><div class="s2s-facts__label">Days riding</div></div>
+      <div class="s2s-facts__item"><div class="s2s-facts__num">4</div><div class="s2s-facts__label">Nights in hotels</div></div>
+      <div class="s2s-facts__item"><div class="s2s-facts__num">{event.teamsMax}</div><div class="s2s-facts__label">Teams max</div></div>
+      <div class="s2s-facts__item"><div class="s2s-facts__num">3</div><div class="s2s-facts__label">Route grades</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="stack">
+        <h2 class="display-lg">It’s not a race</h2>
+        <div class="prose">
+          <p class="lead">The challenge is getting through three days together, as a team. Nobody cares about your time.</p>
+          <p>You ride with your mates on a GPS route along cliff tops, across river mouths and through villages, with checkpoints along the way to keep everyone safe. What you remember is the coastline, the river crossings and the beer at the finish.</p>
+          <p>Lots of dads bring their kids. Riders on 65s with long-range tanks take on the Silver routes, and we move fuel out on the route for the small bikes.</p>
+        </div>
+      </div>
+      <div class="split__img"><Pic name="team-beach" alt="A team of riders with arms raised beside their bikes above the beach" sizes="(min-width: 900px) 50vw, 100vw" /></div>
+    </div>
+  </section>
+
+  <section class="section band" id="routes">
+    <div class="wrap">
+      <div class="stack" style="max-width: 44em">
+        <h2 class="display-lg">Pick your poison</h2>
+        <p class="lead">Gold, Silver or Adventure. Go Wild or keep it Mild, and change your mind each morning.</p>
+      </div>
+      <div class="grades">
+        {grades.map((g) => (
+          <article class="grade">
+            <Pic name={g.img} alt={g.alt} sizes="(min-width: 900px) 33vw, 100vw" />
+            <div><Grade id={g.id} name={g.name} dots={g.dots} /></div>
+            <h3 class="grade__who">{g.who}</h3>
+            <p>{g.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split split--flip" style="align-items: start">
+      <div class="stack sticky-col">
+        <h2 class="display-lg">Five days, four nights</h2>
+        <p class="lead">{event.edition} starts and finishes at {event.startHotel}, with two nights at {event.midHotel} in the middle.</p>
+        <div class="split__img"><Pic name="river-mouth" alt="Riders gathered on a dirt road at a river mouth by the sea" sizes="(min-width: 900px) 50vw, 100vw" /></div>
+        <div><a class="s2s-btn s2s-btn--secondary" href="/ride-info/">Ride info <Icon name="arrow" /></a></div>
+      </div>
+      <Days />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap">
+      <div class="stack" style="max-width: 44em">
+        <h2 class="display-lg">You ride. We do the rest.</h2>
+        <p class="lead">Everything a rider with a job, a family and a full diary needs, without the admin.</p>
+      </div>
+      <div class="included">
+        {included.map((i) => (
+          <div class="inc"><Icon name={i.icon} /><div><h3>{i.h}</h3><p>{i.p}</p></div></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <Video id={event.videoId} poster="speed" title="JBFE Sea to Sea" />
+    </div>
+  </section>
+
+  <section class="section" id="enter" style="padding-top: 0">
+    <div class="wrap">
+      <div class="stack" style="max-width: 44em; margin-bottom: var(--space-6)">
+        <h2 class="display-lg">Entries</h2>
+        <p class="lead">Limited to {event.teamsMax} teams. Riders on a team register together, and each team can bring up to two supporters.</p>
+      </div>
+      <Packages />
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" aria-label="Photos from past events">
+    <div class="wrap mosaic">
+      <figure class="w2 h2"><Pic name="coast-aerial" alt="The Wild Coast from the air, with a track along the cliffs" sizes="(min-width: 900px) 50vw, 100vw" /></figure>
+      <figure><Pic name="chopper" alt="The medical helicopter on standby on a grassy headland" sizes="25vw" /></figure>
+      <figure><Pic name="climb" alt="A rider on a steep rocky climb" sizes="25vw" /></figure>
+      <figure class="w2"><Pic name="finish-arch" alt="The JBFE Sea to Sea finish arch" sizes="(min-width: 900px) 50vw, 100vw" /></figure>
+      <figure class="w2"><Pic name="villages" alt="Rondavels on the hills above the sea" sizes="(min-width: 900px) 50vw, 100vw" /></figure>
+      <figure><Pic name="dinner" alt="Riders at dinner on a hotel terrace" sizes="25vw" /></figure>
+      <figure><Pic name="dunes" alt="Coastal dunes and bush from the air" sizes="25vw" /></figure>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band__img"><Pic name="hole-in-wall" alt="" /></div>
+    <div class="wrap">
+      <span class="s2s-strap">An Epic Adventure</span>
+      <h2 class="display-lg" style="max-width: 10ch">Get your team in</h2>
+      <p class="lead" style="max-width: 26em">{event.edition}, {event.dates} {event.year}. Only {event.teamsMax} teams get a spot.</p>
+      <a class="s2s-btn s2s-btn--primary" href={event.enterUrl} rel="noopener">Enter your team</a>
+    </div>
+  </section>
+</Base>

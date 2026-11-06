@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.seatosea.co.za/sitemap-index.xml
